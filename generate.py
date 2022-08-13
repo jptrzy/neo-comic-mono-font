@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -17,8 +17,8 @@ import os
 import re
 import sys
 
-reload(sys)
-sys.setdefaultencoding('UTF8')
+# reload(sys)
+# sys.setdefaultencoding('UTF8')
 
 import fontforge
 import psMat
@@ -43,32 +43,39 @@ def adjust_height(source, template, scale):
     source.transform(psMat.scale(scale))
 
 font = fontforge.open('vendor/comic-shanns.otf')
-ref = fontforge.open('vendor/Cousine-Regular.ttf')
+
+new = fontforge.open('neo-font.otf')
+font.mergeFonts(new)
+
+ref = fontforge.open('vendor/cousine.ttf')
+
 for g in font.glyphs():
     uni = g.unicode
-    category = unicodedata.category(unichr(uni)) if 0 <= uni <= sys.maxunicode else None
+    category = unicodedata.category(chr(uni)) if 0 <= uni <= sys.maxunicode else None
     if g.width > 0 and category not in ['Mn', 'Mc', 'Me']:
         target_width = 510
         if g.width != target_width:
             delta = target_width - g.width
-            g.left_side_bearing += delta / 2
-            g.right_side_bearing += delta - g.left_side_bearing
+            g.left_side_bearing = int(delta / 2)
+            g.right_side_bearing = int(delta - g.left_side_bearing)
             g.width = target_width
 
-font.familyname = 'Comic Mono'
-font.version = '0.1.1'
-font.comment = 'https://github.com/dtinth/comic-mono-font'
-font.copyright = 'https://github.com/dtinth/comic-mono-font/blob/master/LICENSE'
+
+
+font.familyname = 'Neo Comic Mono'
+font.version = '0.0.1'
+font.comment = 'https://github.com/jptrzy/neo-comic-mono-font'
+font.copyright = 'https://raw.githubusercontent.com/jptrzy/neo-comic-mono-font/master/LICENSE'
 
 adjust_height(font, ref, 0.875)
 font.sfnt_names = [] # Get rid of 'Prefered Name' etc.
-font.fontname = 'ComicMono'
-font.fullname = 'Comic Mono'
-font.generate('ComicMono.ttf')
+font.fontname = 'NeoComicMono'
+font.fullname = 'Neo Comic Mono'
+font.generate('build/NeoComicMono.ttf')
 
 font.selection.all()
-font.fontname = 'ComicMono-Bold'
-font.fullname = 'Comic Mono Bold'
+font.fontname = 'NeoComicMono-Bold'
+font.fullname = 'Neo Comic Mono Bold'
 font.weight = 'Bold'
 font.changeWeight(32, "LCG", 0, 0, "squish")
-font.generate('ComicMono-Bold.ttf')
+font.generate('build/NeoComicMono-Bold.ttf')
