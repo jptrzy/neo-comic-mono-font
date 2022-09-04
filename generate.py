@@ -2,15 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-Generates the Comic Mono font files based on Comic Shanns font.
-
-Required files:
-- vendor/comic-shanns.otf
-- vendor/Cousine-Regular.ttf
+Generates the Neo Comic Mono font files based on Comic Shanns font.
 
 Based on:
 - monospacifier: https://github.com/cpitclaudel/monospacifier/blob/master/monospacifier.py
 - YosemiteAndElCapitanSystemFontPatcher: https://github.com/dtinth/YosemiteAndElCapitanSystemFontPatcher/blob/master/bin/patch
+
 """
 
 import os
@@ -49,17 +46,16 @@ font.mergeFonts(new)
 
 ref = fontforge.open('vendor/cousine.ttf')
 
-for g in font.glyphs():
-    uni = g.unicode
+for glyph in font.glyphs():
+    uni = glyph.unicode
     category = unicodedata.category(chr(uni)) if 0 <= uni <= sys.maxunicode else None
-    if g.width > 0 and category not in ['Mn', 'Mc', 'Me']:
-        target_width = 510
-        if g.width != target_width:
-            delta = target_width - g.width
-            g.left_side_bearing = int(delta / 2)
-            g.right_side_bearing = int(delta - g.left_side_bearing)
-            g.width = target_width
-
+    if glyph.width > 0 and category not in ['Mn', 'Mc', 'Me']:
+        width = 510
+        if glyph.width != width:
+            delta = width - glyph.width
+            glyph.left_side_bearing = int(round(glyph.left_side_bearing + delta / 2))
+            glyph.right_side_bearing = int(round(glyph.right_side_bearing + delta - glyph.left_side_bearing))
+            glyph.width = width
 
 
 font.familyname = 'Neo Comic Mono'
