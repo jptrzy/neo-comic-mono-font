@@ -7,17 +7,8 @@ A legible monospace font... the very typeface you’ve been trained to recognize
   </a>
 </p>
 
-## Installation
-``` bash
-make download
-make
-sudo make install # Only for linux and I don't realy even know, if I do it "the right way", so good luck.
-```
-
-### Requirments
-* python3
-* fontforge
-* wget
+## Building
+You need to have nix with flakes enabled installed and run `nix build`.
 
 ## Origins
 Originaly it was [Comic Mono Font](https://github.com/dtinth/comic-mono-font), but becouse of lack of support of new characters; I created my own fork that is build with Comic Shanns V2 and with small additions of my own characters.

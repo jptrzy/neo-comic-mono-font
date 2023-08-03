@@ -41,6 +41,7 @@ def adjust_height(source, template, scale):
 
 font = fontforge.open('vendor/comic-shanns.otf')
 
+# Modify charasters not implemented in Comic Shans v2
 new = fontforge.open('neo-font.otf')
 font.mergeFonts(new)
 
